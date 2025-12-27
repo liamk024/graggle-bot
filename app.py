@@ -15,7 +15,7 @@ class MyClient(commands.Bot):
             self.active_guilds.append(discord.Object(id=guild.id))
             await init_extensions(self)
             result = await self.tree.sync(guild=object)
-            self.console_log(f'Successfully synced commands {result} to server \'{guild.id}\'')
+            self.console_log(f'Successfully synced commands to guild \'{guild.id}\'')
     
     # Helper function for printing to log in correct format
     def console_log(self, event):

@@ -15,8 +15,8 @@ class OpenAIResponse(commands.Cog):
 
         self.bot.console_log('OpenAIResponse cog loaded successfully.')
 
-        current_profile = config.get_dynamic_config('active_prompt_profile')
         profiles = config.get_dynamic_config('prompt_profiles')
+        current_profile = config.get_dynamic_config('active_prompt_profile')
         self.prompt = profiles[current_profile]
 
     # Handle incoming messages
@@ -138,4 +138,10 @@ class OpenAIResponse(commands.Cog):
 
 # Setup function to load cog into bot
 async def setup(bot):
-    await bot.add_cog(OpenAIResponse(bot))
+    # Unloads the cog if there are no profiles
+    profiles = config.get_dynamic_config('prompt_profiles')
+    if profiles == {}:
+        bot.console_log('No profiles found, not loading openai_response.')
+        return
+    else:
+        await bot.add_cog(OpenAIResponse(bot))

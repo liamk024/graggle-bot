@@ -13,9 +13,9 @@ if not (DISCORD_TOKEN and OPENAI_API_KEY):
     raise Exception('Discord and OpenAI API tokens must be set in .env file or environment variables.')
 
 # Generate default dynamic config file
-# if not os.path.isfile('dynamic.json'):
-#     with open('dynamic.json', 'w') as f:
-#         json.dump()
+if not os.path.isfile('dynamic.json'):
+    with open('dynamic.json', 'w') as f:
+        json.dump({"websites": {}, "website_check_silent": False, "prompt_profiles": {}, "active_prompt_profile": ""}, f, indent=4)
 
 # Function to load dynamic configuration values
 def get_dynamic_config(key=None):

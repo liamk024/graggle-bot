@@ -16,17 +16,14 @@ class WebsiteCheck(commands.Cog):
         self.websites = {}
         self.websites = config.get_dynamic_config('websites')
 
-    # Listen for bot ready event to start website check loop
-    @commands.Cog.listener()
-    async def on_ready(self):
-        if not self.check_websites.is_running():
-            self.check_websites.start()
+        self.check_websites.start()
 
     # Loop task to periodically get http status code from websites
     @tasks.loop(seconds=config.WEBSITE_CHECK_INTERVAL)
     async def check_websites(self):
         websites = self.websites
-        if not websites: return
+        if not websites: 
+            return
         for url in websites.keys():
             host = url if url.startswith('https') else f'https://{url}'
             notif_channel = self.bot.get_channel(websites[url][0])
