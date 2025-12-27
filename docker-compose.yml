@@ -1,0 +1,5 @@
+services:
+  graggle-bot:
+    build: .
+    container_name: graggle-bot
+    env_file: .env
