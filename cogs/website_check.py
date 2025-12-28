@@ -47,7 +47,6 @@ class WebsiteCheck(commands.Cog):
 
                         await notif_channel.send(embed=notif_embed)
                     self.websites[url][1] = True
-                self.bot.console_log("Got response 200")
             # Send notification if status has changed from True to False
             else:
                 if self.websites[url][1]:
@@ -61,7 +60,6 @@ class WebsiteCheck(commands.Cog):
 
                         await notif_channel.send(embed=notif_embed)
                     self.websites[url][1] = False
-                self.bot.console_log("Got bad response")
         config.set_dynamic_config('websites', self.websites)
 
     # Run before website check loop to check if loop running already on discord
