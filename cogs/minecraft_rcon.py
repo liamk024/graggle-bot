@@ -1,30 +1,41 @@
-import discord, rcon, config
+import discord, config
 from discord.ext import commands
 from discord import app_commands
+from rcon.source import rcon
 
-# Main class for rcon interactions
+# Main class for executing RCON commands
 class MinecraftRCON(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.bot.tree.add_command(self.rcon, guilds=self.bot.active_guilds)
+        self.bot.tree.add_command(self.minecraft_rcon, guilds=self.bot.active_guilds)
 
         self.bot.console_log('MinecraftRCON cog loaded successfully.')
-    
-    # Define rcon command group
-    rcon = app_commands.Group(
+
+    # Define minecraft_rcon command group
+    minecraft_rcon = app_commands.Group(
         name='rcon',
-        description='Commands for executing RCON commands from Discord.'
+        description='Minecraft RCON command bot'
     )
     
-    # Add prompt profile command
-    @rcon.command(name='exec', description='Executes given RCON command ')
-    async def exec_command(self, interaction: discord.Interaction, command: str):
-        self.bot.console_log(f'\'{interaction.user.name}\' used the command /rcon exec {command}')
+    # RCON exec command
+    @minecraft_rcon.command(name='exec', description='Executes command on configured Minecraft server through RCON')
+    async def rcon_exec(self, interaction: discord.Interaction, cmd: str):
+        self.bot.console_log(f'\'{interaction.user.name}\' used the command /rcon exec')
 
-        
+        rcon_addr = config.RCON_ADDRESS
+        rcon_port = config.RCON_PORT
+        rcon_pass = config.RCON_PASSWORD
 
-        await interaction.response.send_message(f'Executed command {command} on RCON server {ip}', ephemeral=True)
+        response = await rcon(cmd, host=rcon_addr, port=rcon_port, passwd=rcon_pass)
+        if not response:
+            response = '(no output)'
+
+        await interaction.response.send_message(f'{response}', ephemeral=False)
 
 # Setup function to load cog into bot
 async def setup(bot):
-    await bot.add_cog(MinecraftRCON(bot))
+    if not (config.RCON_ADDRESS and config.RCON_PASSWORD):
+        bot.console_log('No RCON address or RCON password found, not loading minecraft_rcon.')
+        return
+    else:
+        await bot.add_cog(MinecraftRCON(bot))

@@ -3,10 +3,6 @@ from discord.ext import commands
 from discord import app_commands
 from openai import AsyncOpenAI
 
-# Initialize OpenAI for Async use
-openai = AsyncOpenAI()
-openai.api_key = config.OPENAI_API_KEY
-
 # Main class for OpenAI response handling
 class OpenAIResponse(commands.Cog):
     def __init__(self, bot):
@@ -14,6 +10,9 @@ class OpenAIResponse(commands.Cog):
         self.bot.tree.add_command(self.openai_response, guilds=self.bot.active_guilds)
 
         self.bot.console_log('OpenAIResponse cog loaded successfully.')
+
+        # Initialize OpenAI for Async use
+        self.openai = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
 
         profiles = config.get_dynamic_config('prompt_profiles')
         current_profile = config.get_dynamic_config('active_prompt_profile')
@@ -48,7 +47,7 @@ class OpenAIResponse(commands.Cog):
                 input = input + f'Your Prompt:\n{message.author.name}: {message.content}'
 
                 # Generate response from OpenAI
-                response = await openai.responses.create(
+                response = await self.openai.responses.create(
                     model=config.OPENAI_MODEL,
                     reasoning={'effort': 'minimal'},
                     max_output_tokens=config.MAX_RESPONSE_TOKENS,
@@ -142,6 +141,9 @@ async def setup(bot):
     profiles = config.get_dynamic_config('prompt_profiles')
     if profiles == {}:
         bot.console_log('No profiles found, not loading openai_response.')
+        return
+    elif not config.OPENAI_API_KEY:
+        bot.console_log('No OpenAI API Key found, not loading openai_response.')
         return
     else:
         await bot.add_cog(OpenAIResponse(bot))

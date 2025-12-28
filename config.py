@@ -8,9 +8,12 @@ WEBSITE_CHECK_INTERVAL = round(float(os.getenv("WEBSITE_CHECK_INTERVAL", 60.0)),
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-5-nano')
 MAX_RESPONSE_TOKENS = int(os.getenv('MAX_RESPONSE_TOKENS', '512'))
+RCON_ADDRESS = os.getenv('RCON_ADDRESS')
+RCON_PORT = int(os.getenv('RCON_PORT', '25575'))
+RCON_PASSWORD = os.getenv('RCON_PASSWORD')
 
-if not (DISCORD_TOKEN and OPENAI_API_KEY):
-    raise Exception('Discord and OpenAI API tokens must be set in .env file or environment variables.')
+if not (DISCORD_TOKEN):
+    raise Exception('Discord token must be set in .env file or environment variables.')
 
 # Generate default dynamic config file
 if not os.path.isfile('dynamic.json'):
