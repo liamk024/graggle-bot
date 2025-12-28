@@ -15,8 +15,8 @@ RUN addgroup -S botgroup && adduser -S bot -G botgroup
 # Change ownership to the bot user for all files
 RUN chown -R bot:botgroup /usr/local/app
 
-# Only change permissions for data.json if it already exists
-RUN [ -f /usr/local/app/data.json ] && chown bot:botgroup /usr/local/app/data.json && chmod 664 /usr/local/app/data.json || echo "data.json not found, skipping"
+# Only change permissions for dynamic.json if it already exists
+RUN [ -f /usr/local/app/dynamic.json ] && chown bot:botgroup /usr/local/app/dynamic.json && chmod 664 /usr/local/app/dynamic.json || echo "dynamic.json not found, skipping"
 
 USER bot
 
