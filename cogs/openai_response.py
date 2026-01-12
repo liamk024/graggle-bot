@@ -1,3 +1,8 @@
+# Graggle bot: Discord bot for personal use in my discord server
+# Copyright (C) 2026  Liam Kelly
+#
+# Full Copyright disclaimer in app.py
+
 import discord, config, aiohttp
 from discord.ext import commands
 from discord import app_commands
