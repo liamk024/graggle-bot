@@ -31,3 +31,9 @@ class Website(SQLModel, table=True):
 class Option(SQLModel, table=True):
     name: str = Field(primary_key=True)
     enable: bool
+
+class RCONServer(SQLModel, table=True):
+    name: str = Field(primary_key=True)
+    host: str
+    port: int = Field(ge=1000, le=65535)
+    password: str

@@ -3,13 +3,15 @@
 
 from discord import ApplicationContext, Bot
 
-from .utils.config import DISCORD_TOKEN, GUILD_ID
+import graggle_bot.logging  # noqa: F401
+from graggle_bot.utils.config import DISCORD_TOKEN
 
 bot = Bot()
 
-bot.load_extension(f"{__package__}.cogs.website_check")
+bot.load_extension("graggle_bot.cogs.website_check")
+bot.load_extension("graggle_bot.cogs.rcon")
 
-@bot.slash_command(guild_ids=GUILD_ID)
+@bot.slash_command()
 async def foo(ctx: ApplicationContext) -> None:
     await ctx.respond("bar")
 

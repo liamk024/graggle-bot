@@ -3,9 +3,15 @@ from typing import List
 from pydantic import HttpUrl
 from sqlmodel import Session, select
 
-from .database import engine
-from .models import Option, Website
+from graggle_bot.database import engine
+from graggle_bot.models.schemas import Option, RCONServer, Website
 
+
+def get_all_rcon_servers() -> List[RCONServer] | None:
+    with Session(engine) as session:
+        statement = select(RCONServer)
+        return list(session.exec(statement).all())
+    return None
 
 def get_all_websites() -> List[Website] | None:
     with Session(engine) as session:
@@ -19,6 +25,14 @@ def get_option(option: str) -> Option | None:
         results = session.exec(statement)
         saved_option: Option | None = results.first()
         return saved_option
+    return None
+
+def get_rcon_server(name: str) -> RCONServer | None:
+    with Session(engine) as session:
+        statement = select(RCONServer).where(RCONServer.name == name)
+        results = session.exec(statement)
+        user: RCONServer | None = results.first()
+        return user
     return None
 
 def get_website(url: HttpUrl) -> Website | None:
@@ -46,9 +60,25 @@ def set_option(option: str, enable: bool) -> bool:
         return True
     return False
 
+def set_rcon_server(rconserver: RCONServer) -> bool:
+    with Session(engine) as session:
+        existing: RCONServer | None = session.get(RCONServer, rconserver.name)
+
+        if existing is None:
+            session.add(rconserver)
+        else:
+            existing.name = rconserver.name
+            existing.host = rconserver.host
+            existing.port = rconserver.port
+            existing.password = rconserver.password
+
+        session.commit()
+        return True
+    return False
+
 def set_website(website: Website) -> bool:
     with Session(engine) as session:
-        existing: Website | None = session.get(Website, website.url)  # url is PK
+        existing: Website | None = session.get(Website, website.url)
 
         if existing is None:
             session.add(website)
@@ -61,6 +91,20 @@ def set_website(website: Website) -> bool:
             existing.down_embed_url = website.down_embed_url
 
         session.commit()
+        return True
+    return False
+
+def delete_rcon_server(name: str) -> bool:
+    with Session(engine) as session:
+        exists: RCONServer | None = session.exec(
+            select(RCONServer).where(RCONServer.name == name)
+        ).first()
+        if not exists:
+            return False
+
+        session.delete(exists)
+        session.commit()
+
         return True
     return False
 
