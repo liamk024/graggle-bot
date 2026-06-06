@@ -32,7 +32,7 @@ async def check_website(url: str, retries: int = 3, delay: float = 2.0) -> int |
             logger.debug(f"Got response {response.status_code} from {url}")
             return response.status_code
         except HTTPError as error:
-            logger.warning(f"Attempt {attempt + 1}/{retries} failed for {url}: {error}")
+            logger.debug(f"Attempt {attempt + 1}/{retries} failed for {url}: {error}")
             if attempt < retries - 1:
                 await async_sleep(delay)
     return None
