@@ -1,3 +1,4 @@
+# src/utils/utility.py
 import logging
 from asyncio import sleep as async_sleep
 from datetime import datetime, timedelta
@@ -6,8 +7,8 @@ from zoneinfo import ZoneInfo
 from discord import Embed
 from httpx import AsyncClient, HTTPError, Response
 
-from graggle_bot.models.schemas import Website
-from graggle_bot.utils.config import TZ_INFO
+from src.models.schemas import Website
+from src.utils.config import TZ_INFO
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,9 @@ def time_diff_str(start: datetime, end: datetime) -> str:
 
 # Ping website to check for response 200
 async def check_website(url: str, retries: int = 3, delay: float = 2.0) -> int | None:
+    if not (url.startswith("http://") or url.startswith("https://")):
+        url = "https://" + url
+
     for attempt in range(retries):
         try:
             response: Response = await _client.get(url)

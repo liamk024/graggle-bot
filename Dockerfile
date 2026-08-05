@@ -19,4 +19,4 @@ RUN chown -R pycord:pycord /data
 
 USER pycord
 
-CMD ["uv", "run", "graggle-bot"]
+CMD ["uv", "run", "python", "-m", "src"]

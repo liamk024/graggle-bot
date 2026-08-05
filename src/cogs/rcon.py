@@ -1,3 +1,4 @@
+# src/cogs/rcon.py
 import logging
 from io import BytesIO
 
@@ -19,10 +20,10 @@ from rcon.exceptions import (
 )
 from rcon.source import rcon as rcon_client
 
-from graggle_bot.models.schemas import RCONServer
-from graggle_bot.utils.autocomplete import rcon_autocomplete
-from graggle_bot.utils.config import GUILD_ID
-from graggle_bot.utils.queries import (
+from src.models.schemas import RCONServer
+from src.utils.autocomplete import rcon_autocomplete
+from src.utils.config import GUILD_ID
+from src.utils.queries import (
     delete_rcon_server,
     get_all_rcon_servers,
     get_rcon_server,

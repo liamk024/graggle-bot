@@ -1,4 +1,4 @@
-# src/graggle_bot/utils/models.py
+# src/models/schemas.py
 from datetime import datetime
 
 from pydantic import HttpUrl, TypeAdapter, field_validator

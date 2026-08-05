@@ -1,10 +1,11 @@
+# src/utils/queries.py
 from typing import List
 
 from pydantic import HttpUrl
 from sqlmodel import Session, select
 
-from graggle_bot.database import engine
-from graggle_bot.models.schemas import Option, RCONServer, Website
+from src.database import engine
+from src.models.schemas import Option, RCONServer, Website
 
 
 def get_all_rcon_servers() -> List[RCONServer] | None:

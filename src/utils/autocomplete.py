@@ -1,7 +1,8 @@
+# src/utils/autocomplete.py
 from discord import AutocompleteContext
 
-from graggle_bot.models.schemas import RCONServer, Website
-from graggle_bot.utils.queries import get_all_rcon_servers, get_all_websites
+from src.models.schemas import RCONServer, Website
+from src.utils.queries import get_all_rcon_servers, get_all_websites
 
 
 async def website_autocomplete(ctx: AutocompleteContext) -> list[str]:

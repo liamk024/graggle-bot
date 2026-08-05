@@ -1,6 +1,4 @@
-# Graggle bot: Discord bot for personal use in my discord server
-# Copyright (C) 2026  Liam Kelly
-
+# src/cogs/website_check.py
 import logging
 from asyncio import gather
 from datetime import datetime
@@ -16,17 +14,17 @@ from discord import (
 )
 from discord.ext import commands, tasks
 
-from graggle_bot.models.schemas import Website
-from graggle_bot.utils.autocomplete import website_autocomplete
-from graggle_bot.utils.config import DOWN_EMBED_URL, GUILD_ID, TZ_INFO, UP_EMBED_URL
-from graggle_bot.utils.queries import (
+from src.models.schemas import Website
+from src.utils.autocomplete import website_autocomplete
+from src.utils.config import DOWN_EMBED_URL, GUILD_ID, TZ_INFO, UP_EMBED_URL
+from src.utils.queries import (
     delete_website,
     get_all_websites,
     get_option,
     set_option,
     set_website,
 )
-from graggle_bot.utils.utility import build_status_embed, check_website
+from src.utils.utility import build_status_embed, check_website
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +46,8 @@ class WebsiteCheck(commands.Cog):
     @web.command(name="ping", description="Ping a website to check if it's up")
     @option("url", str, description="URL to check, beginning with http:// or https://")
     async def ping(self, ctx: ApplicationContext, url: str) -> None:
+        await ctx.defer()
+
         status: int | None = await check_website(url)
 
         response: str = "An error has occurred"
