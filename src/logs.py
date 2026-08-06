@@ -2,10 +2,12 @@
 from logging import (
     DEBUG,
     INFO,
+    WARNING,
     FileHandler,
     Formatter,
     StreamHandler,
     basicConfig,
+    getLogger,
 )
 from sys import stdout
 
@@ -24,3 +26,4 @@ if DEBUG_LOGS:
     level = DEBUG
 
 basicConfig(level=level, handlers=[file_handler, stream_handler])
+getLogger("httpx").setLevel(WARNING)

@@ -180,13 +180,13 @@ dependencies = [
     { name = "dotenv" },
     { name = "httpx" },
     { name = "py-cord" },
-    { name = "pyrefly" },
     { name = "rcon" },
     { name = "sqlmodel" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "pyrefly" },
     { name = "ruff" },
 ]
 
@@ -195,13 +195,15 @@ requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "py-cord", specifier = ">=2.8.0" },
-    { name = "pyrefly", specifier = ">=1.2.0" },
     { name = "rcon", specifier = ">=2.4.9" },
     { name = "sqlmodel", specifier = ">=0.0.38" },
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.15.16" }]
+dev = [
+    { name = "pyrefly", specifier = ">=1.2.0" },
+    { name = "ruff", specifier = ">=0.15.16" },
+]
 
 [[package]]
 name = "greenlet"
